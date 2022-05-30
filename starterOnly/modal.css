@@ -171,7 +171,8 @@ main {
   font-size: 16px;
 }
 
-.bground {
+.bground,
+.msgBground {
   display: none;
   position: fixed;
   z-index: 1;
@@ -180,10 +181,11 @@ main {
   height: 100%;
   width: 100%;
   overflow: auto;
-  background-color: rgba(26, 39, 156, 0.4);
+  background-color: rgba(183, 189, 240, 0.4);
 }
 
-.content {
+.content,
+.success {
   margin: 5% auto;
   width: 100%;
   max-width: 500px;
@@ -195,6 +197,13 @@ main {
   position: relative;
   color: #fff;
   padding-top: 10px;
+}
+
+.success {
+  margin: 15% auto;
+  padding: auto;
+  text-align: center;
+  height: 100px;
 }
 
 .modal-body {

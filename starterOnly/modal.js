@@ -17,8 +17,10 @@ const modalClose = document.querySelector(".close");
 
 // *** Methods ***
 
-// To launch modal
-modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
+// launch modal form
+function launchModal() {
+  modalbg.style.display = "block";
+}
 
 // To close modal
 function closeModal() {
@@ -27,15 +29,13 @@ function closeModal() {
 
 // *** Event Listener Functions ***
 
-// launch modal form
-function launchModal() {
-  modalbg.style.display = "block";
-}
+// To launch modal
+modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
 // close modal form
 modalClose.addEventListener("click", closeModal);
 
-// ***************** Form Validation for each entry ***************
+// ***************** Inputs Validation ***************
 
 // Select the form
 const form = document.querySelector("#form");
@@ -96,6 +96,7 @@ const validEmail = (inputEmail) => {
   }
 };
 
+// Birthdate
 const validBirthdate = (inputBirthdate) => {
   let birthdateRegExp = new RegExp("^[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}$");
   let small = inputBirthdate.nextElementSibling;
@@ -112,6 +113,7 @@ const validBirthdate = (inputBirthdate) => {
   }
 };
 
+// Number of tournament done
 const validQuantity = (inputQuantity) => {
   let quantityRegExp = new RegExp("^[0-9]{1,2}$");
   let small = inputQuantity.nextElementSibling;
@@ -128,6 +130,7 @@ const validQuantity = (inputQuantity) => {
   }
 };
 
+// Usage Conditions
 const validConditions = () => {
   let small = document.getElementById("conditions");
   if (form.checkbox1.checked) {
@@ -141,17 +144,24 @@ const validConditions = () => {
   }
 };
 
-// Location
+// Open success message
 
-const radioButtons = document.querySelectorAll('input[name="location"]');
+const msgBground = document.querySelector(".msgBground");
+const addName = document.querySelector(".addName");
 
-for (const radioButton of radioButtons) {
-  radioButton.addEventListener("click", (e) => {
-    city = radioButton.value;
-  });
+// launch modal form
+function launchMsg(name) {
+  msgBground.style.display = "block";
+  modalbg.style.display = "none";
+  addName.innerHTML = `Merci ${name} !`;
 }
 
-// ******** Form Validation event listener *******
+// To close modal
+function closeMsg() {
+  successMsg.style.display = "none";
+}
+
+// ************ Form Validation ***********
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -169,7 +179,9 @@ form.addEventListener("submit", (e) => {
     validQuantity(form.quantity) &&
     validConditions()
   ) {
-    form.submit();
-    console.log(FormData);
+    setTimeout(() => {
+      form.submit();
+    }, 2000);
+    launchMsg(form.first.value);
   }
 });
