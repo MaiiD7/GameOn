@@ -181,7 +181,7 @@ form.addEventListener("submit", (e) => {
   ) {
     setTimeout(() => {
       form.submit();
-    }, 2000);
+    }, 4000);
     launchMsg(form.first.value);
   }
 });
