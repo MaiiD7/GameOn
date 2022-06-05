@@ -21,13 +21,7 @@ body {
   margin: 0 auto;
 }
 
-/* Classes used in modal.js */
-
-.valid {
-  font-size: small;
-  color: #279e7a;
-}
-
+/* Classe used in modal.js */
 .invalid {
   font-size: small;
   color: #fe142f;
