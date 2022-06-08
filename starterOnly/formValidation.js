@@ -1,24 +1,39 @@
 // Select the form
 const form = document.querySelector("#form");
 
-// ***************** Input Validation Methods ***************
+// *********** Array of objects to be validated *************
 
-// Names
-const validName = (input) =>
-  new RegExp("^[a-zA-Zéèï]{2,30}$", "g").test(input.value);
+validationArray = [
+  {
+    err: "Prénom non-valide ✘",
+    input: form.first,
+    RegExp: RegExp("^[a-zA-Zéèï]{2,30}$"),
+  },
+  {
+    err: "Nom non-valide ✘",
+    input: form.last,
+    RegExp: RegExp("^[a-zA-Zéèï]{2,30}$"),
+  },
+  {
+    err: "Adress e-mail non-valide ✘",
+    input: form.email,
+    RegExp: RegExp("^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$"),
+  },
+  {
+    err: "Date non-valide ✘",
+    input: form.birthdate,
+    RegExp: RegExp("^[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}$"),
+  },
+  {
+    err: "Veuillez entrer un nombre à un ou deux chiffres ✘",
+    input: form.quantity,
+    RegExp: RegExp("^[0-9]{1,2}$"),
+  },
+];
 
-// Email
-const validEmail = (input) =>
-  new RegExp("^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$").test(
-    input.value
-  );
+// ***************** Input Validation Method ***************
 
-// Birthdate
-const validBirthdate = (input) =>
-  new RegExp("^[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}$").test(input.value);
-
-// Number of tournaments done
-const validQuantity = (input) => new RegExp("^[0-9]{1,2}$").test(input.value);
+const validInput = (input, RegExp) => RegExp.test(input.value);
 
 // ************** Usage Conditions Validation Method ****************
 
@@ -49,31 +64,18 @@ function launchMsg(name) {
 
 // ****************** Form Validation ********************
 
-// Array containing objects made of :
-// A function, a error message and the input for the function
-
-validationArray = [
-  { fn: validName, err: "Prénom non-valide ✘", input: form.first },
-  { fn: validName, err: "Nom non-valide ✘", input: form.last },
-  { fn: validEmail, err: "Adress e-mail non-valide ✘", input: form.email },
-  { fn: validBirthdate, err: "Date non-valide ✘", input: form.birthdate },
-  {
-    fn: validQuantity,
-    err: "Veuillez entrer un nombre à un ou deux chiffres ✘",
-    input: form.quantity,
-  },
-];
-
 // addEventListener to run the whole validation
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   validationFlag = true;
-  validationArray.forEach((element) => {
-    let small = element.input.nextElementSibling;
+
+  // Validation Loop
+  validationArray.forEach((el) => {
+    let small = el.input.nextElementSibling;
     small.classList.remove("invalid");
     small.innerHTML = "";
-    if (!element.fn(element.input)) {
-      small.innerHTML = element.err;
+    if (!validInput(el.input, el.RegExp)) {
+      small.innerHTML = el.err;
       small.classList.add("invalid");
       validationFlag = false;
     }
@@ -84,6 +86,7 @@ form.addEventListener("submit", (e) => {
   if (validationFlag) {
     setTimeout(() => {
       form.submit();
+      console.log(formData);
     }, 3000);
     launchMsg(validationArray[0].input.value);
   }
