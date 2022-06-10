@@ -1,43 +1,50 @@
 // Select the form
 const form = document.querySelector("#form");
 
+// Select the message box and the name to display in it 
+const msgBground = document.querySelector(".msgBground");
+const addName = document.querySelector(".addName");
+
 // *********** Array of objects to be validated *************
 
+// Objects in array are made of an error message, the input concerned and the RegExp to be validated
 validationArray = [
   {
     err: "Prénom non-valide ✘",
     input: form.first,
-    RegExp: RegExp("^[a-zA-Zéèï]{2,30}$"),
+    regexp: RegExp("^[a-zA-Zéèï]{2,30}$"),
   },
   {
     err: "Nom non-valide ✘",
     input: form.last,
-    RegExp: RegExp("^[a-zA-Zéèï]{2,30}$"),
+    regexp: RegExp("^[a-zA-Zéèï]{2,30}$"),
   },
   {
     err: "Adress e-mail non-valide ✘",
     input: form.email,
-    RegExp: RegExp("^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$"),
+    regexp: RegExp("^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$"),
   },
   {
     err: "Date non-valide ✘",
     input: form.birthdate,
-    RegExp: RegExp("^[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}$"),
+    regexp: RegExp("^[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}$"),
   },
   {
     err: "Veuillez entrer un nombre à un ou deux chiffres ✘",
     input: form.quantity,
-    RegExp: RegExp("^[0-9]{1,2}$"),
+    regexp: RegExp("^[0-9]{1,2}$"),
   },
 ];
 
 // ***************** Input Validation Method ***************
 
-const validInput = (input, RegExp) => RegExp.test(input.value);
+// Validates all the inputs except the checkboxes
+const validate = (input, regexp) => regexp.test(input.value);
 
 // ************** Usage Conditions Validation Method ****************
 
-const validConditions = () => {
+// Verifying that the conditions of usage are checked
+const validateConditions = () => {
   let small = document.getElementById("conditions");
   if (form.checkbox1.checked) {
     small.innerHTML = "";
@@ -51,9 +58,6 @@ const validConditions = () => {
 };
 
 // **************** To show success message *****************
-
-const msgBground = document.querySelector(".msgBground");
-const addName = document.querySelector(".addName");
 
 // Display the message
 function launchMsg(name) {
@@ -69,25 +73,31 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
   validationFlag = true;
 
-  // Validation Loop
+  // Validation Loop in validationArray
   validationArray.forEach((el) => {
     let small = el.input.nextElementSibling;
     small.classList.remove("invalid");
     small.innerHTML = "";
-    if (!validInput(el.input, el.RegExp)) {
+    if (!validate(el.input, el.regexp)) {
       small.innerHTML = el.err;
       small.classList.add("invalid");
       validationFlag = false;
     }
   });
-  if (!validConditions()) {
+
+  // Checking if conditions of usage are checked
+  if (!validateConditions()) {
     validationFlag = false;
   }
+
+  // Submit form if validated
   if (validationFlag) {
     setTimeout(() => {
       form.submit();
       console.log(formData);
     }, 3000);
+
+    // Display the success message
     launchMsg(validationArray[0].input.value);
   }
 });
